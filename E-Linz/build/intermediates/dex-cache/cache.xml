@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.0.0_d1033b551d1754ae41d2b246405c395dbd537d99/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/net.opengis.fes-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1157ac7108a03ce011de970e5c70ce4952b175cf">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/net.opengis.fes-11.0_d98173f43a97d06af9be8d5a5f650dcfbc8c96f0/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-25.0.0_22cd11ee227090a699100e7bb5ef16d66cfa1c35/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/gt-xml-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1db73ed277b4abf6b4f2b5b7806a69a96b83e0a5">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/gt-xml-11.0_89731345f1eeb014efce3d48e5864de1201785f3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-25.0.0_f989033a95c97b18b98e49ff0330bdaeb246c2b4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-25.0.0_731e9faa61cb4ae17dd03bbcb988134facaf5016/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/gt-xsd-gml3-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a0d9aa85648425dd2f01798ab9abcb3a780c5bb5">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/gt-xsd-gml3-11.0_6fc6f9bcdb53e68d5a0128fe80b4592eb808406b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/gt-opengis-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="c88556349fb2006d944be3e5819fefdbf3df8c48">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/gt-opengis-11.0_663a6a2d609474f9ab223c64576bc1feddda767f/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-25.0.0_386eee48b4597d8ba7e66ad6c082ac80edf37c5e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="93d90fa80e901e8e522d91a66d20773bce5762df">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_f175a72aefb793a08f8fc8d9d2b6764f738547e3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="26674000177e45447a0326a6ad84612761199a13">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.0.0_1c0ee6788708a7e3535b51cec188b160b56e5aa3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/xml-commons-resolver-1.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3d0f97750b3a03e0971831566067754ba4bfd68c">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/xml-commons-resolver-1.2_44f2136b54e56af197016627d5c71f0988c9de04/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/gt-data-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b40b6efb792e283f8d0b77914d82724711498450">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/gt-data-11.0_3ff17270759883c935c24bfb9d381103d0f7bb9a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-25.0.0_d54f344ab670e4c9e70ebc3b1da5e6087c9593e9/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/3.1.36/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="7421dcb3ed9db47a59ec618e2398f0df65c2d480">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-3.1.36_2485dad9526dc93e692f98c5eb7635a7192f8281/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6f6f15ffc2ec28fbfccbd9d84cd093bbe1d8a760">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_675bc134d363bae99babed33fc76b156c20259ca/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-25.0.0_eda55da5a369adc68573f782bd59c95f26fc4e01/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-25.0.0_82ac0536ca72fe56bc7c3e1b42b9aced52b384a7/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/net.opengis.wfs-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="886dc97a81c0896c3a5d82a51a19d541538c7f19">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/net.opengis.wfs-11.0_2f612ba1d9e859945b14f957330609563bb924e4/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.0/support-annotations-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.0.0_c65e47e0278e58f5cb283b9a3d26a3cb2fb1dfd1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-25.0.0_4062725187c633f5ed817a75abb6b3c89d003cd3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-25.0.0_a327027db7a95c5c4784fbd508a21bb607ed7aec/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.0.0_f6af769bfe1ea7ad13fb2a9cf3f7383b02051384/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/gt-xsd-core-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="625043ceeac89736512bef235370f82a15f90cd1">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/gt-xsd-core-11.0_a107bcf39bca5510017df14f913d304fb9578875/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/net.opengis.ows-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6e18fc8a2056477fd960e2ea2af687b653a25eab">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/net.opengis.ows-11.0_43a91184edad2e555af1a01e435be1ddd874c901/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/gson-2.2.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="973e832af433b44c3ed11c426f2f390b29f3f3f8">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/gson-2.2.4_88f6d14322370ea611f6810b5bf69d192a76294e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/json-simple-1.1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="5d6f9b6a9ddca2a28c0216cc44efb2e20d9c23b5">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/json-simple-1.1.1_e473720345e34b61eedefc5760d5205f21f7efae/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-25.0.0_348507436569034782cb046fa4e5793559272521/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/libs/gt-api-11.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="69b42ab14e02bf7d0b22622c2db707768622e198">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/2/gt-api-11.0_144dda354582e6ecd44adfea8127f7dc076f44ee/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
+        <dex dex="/Users/hari/Dropbox/Uni/3. Semester/SE/E-Linz/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-25.0.0_44044c5e69d0e3baabeb8cbd764dd8e3a44e38ee/classes.dex" />
+    </item>
+
+</items>

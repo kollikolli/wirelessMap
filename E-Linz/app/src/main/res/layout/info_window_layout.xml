@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/bg_color"
+    >
+
+
+    <TextView
+        android:id="@+id/title"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/socketTypesTitle"
+        android:text="@string/socketTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:textStyle="bold"
+        android:textSize="14sp"
+
+       />
+
+    <TextView
+        android:id="@+id/socketTypes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:textSize="14sp"
+        />
+
+    <TextView
+        android:id="@+id/typesTitle"
+        android:text="@string/fahrzeugtypen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:textSize="14sp"
+
+        />
+
+    <TextView
+        android:id="@+id/types"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+       />
+
+    <Button
+        android:id="@+id/tankButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Hier Tanken!"
+        android:textSize="14dp"
+        android:textColor="#36a036"
+        android:textStyle="bold"
+        android:background="@color/bgButtonColor"
+        android:clickable="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="6dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="4dp"
+
+        />
+
+</LinearLayout>

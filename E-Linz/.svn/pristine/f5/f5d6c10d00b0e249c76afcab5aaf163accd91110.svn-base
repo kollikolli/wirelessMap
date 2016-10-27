@@ -1,0 +1,8 @@
+package com.elinz.app;
+
+/**
+ * Created by sebastian on 08.04.14.
+ */
+public enum OrderType {
+    NAME, DISTANCE;
+}

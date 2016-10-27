@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_list"
+        android:title="Liste" />
+    <item android:id="@+id/menu_map"
+        android:title="Map" />
+    <item android:id="@+id/menu_tanken"
+        android:title="Tanken" />
+    <item android:id="@+id/menu_statistik"
+        android:title="Statistik" />
+    <item android:id="@+id/menu_database"
+        android:title="Database" />
+</menu>

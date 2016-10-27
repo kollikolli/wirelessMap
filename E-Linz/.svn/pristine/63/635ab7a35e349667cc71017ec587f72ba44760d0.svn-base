@@ -1,0 +1,170 @@
+package com.elinz.importData;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+
+import com.elinz.app.EStation;
+import com.elinz.app.StationType;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.util.Collection;
+import java.util.LinkedList;
+
+
+import java.io.InputStream;
+import java.net.URL;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.gml3.GMLConfiguration;
+import org.geotools.xml.Parser;
+import org.opengis.feature.simple.SimpleFeature;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+/**
+ * Created by sebastian on 01.04.14.
+ */
+public class ImportController {
+
+    private static final String FILENAME = "stations.json";
+    private final String GMLURL = "http://data.linz.gv.at/katalog/linz_ag/linz_ag_strom/stromtankstellen/Stromtankstellen.gml";
+
+    private static ImportController ourInstance = new ImportController();
+
+    public static ImportController getInstance() {
+        return ourInstance;
+    }
+
+    private ImportController() {
+    }
+
+    public LinkedList<EStation> importStations(Context con) {
+        if (isOnline(con))
+            return readFromInternet();
+        else
+            return readFromStorage(con);
+    }
+
+    private LinkedList<EStation> readFromInternet() {
+
+        InputStream in = null;
+        try {
+            in = new URL(GMLURL).openStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        GMLConfiguration gml = new GMLConfiguration();
+        Parser parser = new Parser(gml);
+        parser.setStrict(false);
+
+        FeatureCollection<?, ?> features = null;
+        try {
+            features = (FeatureCollection<?, ?>) parser.parse(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        FeatureIterator<?> i = features.features();
+
+        int nfeatures = 0;
+        while( i.hasNext() ) {
+            SimpleFeature f = (SimpleFeature) i.next();
+
+            System.out.println(f.getAttribute("NAME"));
+            System.out.println(f.getBounds().getMaxX());
+            System.out.println(f.getBounds().getMaxY());
+
+            nfeatures++;
+        }
+
+        System.out.println("Number of features: " + nfeatures);
+
+        // Linked-List<EStation> stations erzeugen
+
+        // Hier den Service aufrufen, der die neuen Daten persistiert
+
+        // persistStations(stations, getApplicationContext());
+
+
+        // return stations;
+        return null;
+
+ }
+
+    private LinkedList<EStation> readFromStorage(Context con) {
+
+        // alternativ FileInputStream fis = con.openFileInput("hello.txt", Context.MODE_PRIVATE);
+        FileInputStream fis = null;
+        try {
+            fis = con.openFileInput("hello.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        InputStreamReader isr = new InputStreamReader(fis);
+        BufferedReader bufferedReader = new BufferedReader(isr);
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String json = sb.toString();
+
+        return jsonToStations(json);
+    }
+
+    private LinkedList<EStation> jsonToStations(String json) {
+        LinkedList<EStation> list = new LinkedList<EStation>();
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<LinkedList<EStation>>(){}.getType();
+        list = gson.fromJson(json, collectionType);
+
+        return list;
+    }
+
+    private String stationsToJason(LinkedList<EStation> stations) {
+        Gson gson = new Gson();
+        return gson.toJson(stations);
+
+    }
+
+    private boolean isOnline(Context con) {
+        ConnectivityManager cm =
+                (ConnectivityManager) con.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+    private void persistStations(LinkedList<EStation> stations, Context con) throws JSONException {
+        String json = stationsToJason(stations);
+            //Build intent
+        Intent intent = new Intent(con, PersistService.class);
+        intent.putExtra("json", json);
+            //Starts Service to persist String
+        con.startService(intent);
+    }
+}

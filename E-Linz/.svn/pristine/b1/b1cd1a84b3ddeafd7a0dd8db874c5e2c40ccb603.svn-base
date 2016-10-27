@@ -1,0 +1,134 @@
+package com.elinz.app;
+
+import android.content.Context;
+
+import com.elinz.importData.ImportController;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+
+/**
+ * Created by sebastian on 07.04.14.
+ */
+public class EStationController {
+    private static EStationController ourInstance;
+
+    // Default-Koordinaten zeigen auf den City-Park in Linz
+    private static double DEFAULT_LON = 48.300096;
+    private static double DEFAULT_LAT = 14.292750;
+
+    private Context context;
+    private LinkedList<EStation> stationList;
+    private double lon;
+    private double lat;
+
+
+    public static EStationController getInstance(Context con) {
+        if(ourInstance == null)
+            ourInstance = new EStationController(con);
+        return ourInstance;
+    }
+
+    private EStationController(Context con) {
+        context = con;
+        lon = DEFAULT_LON;
+        lat = DEFAULT_LAT;
+
+        stationList = ImportController.getInstance().importStations(con);
+    }
+
+    public LinkedList<EStation> getAll(double lon, double lat, OrderType ord) {
+        LinkedList<EStation> list = (LinkedList<EStation>) stationList.clone();
+
+        switch (ord) {
+            case NAME:
+                return orderByName(list);
+            case DISTANCE:
+                return orderByDist(list);
+            default:
+                return null;
+        }
+    }
+
+    public LinkedList<EStation> getStations(double lon, double lat, StationType type) {
+        LinkedList<EStation> list = new LinkedList<EStation>();
+
+
+        for(EStation stat : stationList) {
+            if(stat.getType().contains(type))
+                list.add(stat.clone());
+        }
+
+        return list;
+    }
+
+    private LinkedList<EStation> orderByDist(LinkedList<EStation> list) {
+        Collections.sort(list, new Comparator() {
+
+            public int compare(Object o1, Object o2) {
+
+                double lon1 = ((EStation) o1).getLongitude();
+                double lat1 = ((EStation) o1).getLatitude();
+                double lon2 = ((EStation) o2).getLongitude();
+                double lat2 = ((EStation) o2).getLatitude();
+
+                int comparison = compareDist(lon1, lat1, lon2, lat2);
+
+                if(comparison != 0) {
+                    return comparison;
+                } else {    // Sollten die Distanzen zufaellig gleich sein, so wird nach Namen sortiert
+
+                    String name1 = ((EStation) o1).getName();
+                    String name2 = ((EStation) o2).getName();
+
+                    return name1.compareTo(name2);
+                }
+            }
+        });
+        return list;
+    }
+
+    private LinkedList<EStation> orderByName(LinkedList<EStation> list) {
+        Collections.sort(list, new Comparator() {
+
+            public int compare(Object o1, Object o2) {
+
+                String name1 = ((EStation) o1).getName();
+                String name2 = ((EStation) o2).getName();
+
+                int comparison =  name1.compareTo(name2);
+
+                if(comparison != 0)
+                    return comparison;
+                else {  // Sollten die Namen zufaellig gleich sein, so wird nach Distanzen sortiert
+
+                    double lon1 = ((EStation) o1).getLongitude();
+                    double lat1 = ((EStation) o1).getLatitude();
+                    double lon2 = ((EStation) o2).getLongitude();
+                    double lat2 = ((EStation) o2).getLatitude();
+
+                    return compareDist(lon1, lat1, lon2, lat2);
+                }
+            }
+        });
+        return list;
+    }
+
+    private int compareDist(double lon1, double lat1, double lon2, double lat2) {
+        double dist1 = 0.0;
+        double dist2 = 0.0;
+
+               /**
+                *  Satz des Pythagoras:
+                *  Distanz = Wurzel von (A*A + B*B)
+                *   A ergibt sich aus lon der eigenen Position minus lon der übergebenen Position
+                *   B ergibt sich aus lat der eigenen Position minus lat der übergebenen Position
+                */
+
+        dist1 = Math.sqrt(Math.pow(lon-lon1, 2.0) + Math.pow(lat - lat1, 2.0));
+        dist2 = Math.sqrt(Math.pow(lon-lon2, 2.0) + Math.pow(lat - lat2, 2.0));
+
+        return Double.compare(dist1, dist2);
+    }
+}

@@ -1,0 +1,301 @@
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context="com.elinz.app.StatisticsActivity">
+
+        <TextView
+            android:text="Statistik"
+            android:id="@+id/stat_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14pt"
+            android:textStyle="bold"
+            android:gravity="center_vertical|center_horizontal" />
+
+        <Spinner
+            android:id="@+id/stat_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stat_header"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/stat_header_station"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E-Stationen"
+            android:textSize="11pt"
+            android:textStyle="italic|bold"
+            android:layout_below="@id/stat_type_spinner"
+            android:layout_marginLeft="10dp"
+            />
+
+            <TextView
+                android:id="@+id/stat_label_station_recent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zuletzt"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_header_station"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_station_recent_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="E-Station"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_header_station"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_station_most"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Häufigst"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_station_recent"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_station_most_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="E-Station"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_station_recent_value"
+                android:layout_alignParentRight="true"
+                />
+
+
+        <TextView
+            android:id="@+id/stat_header_kwh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kwH"
+            android:textSize="11pt"
+            android:textStyle="italic|bold"
+            android:layout_below="@id/stat_label_station_most"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gesamt"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_header_kwh"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_total_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_header_kwh"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_avg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Durchschnitt"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_total"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_avg_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_total"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_recent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zuletzt"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_avg"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_recent_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_avg"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_lowest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Geringste"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_recent"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_lowest_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_recent"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_highest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Höchste"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_lowest"
+
+                />
+
+            <TextView
+                android:id="@+id/stat_label_kwh_highest_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_kwh_lowest"
+                android:layout_alignParentRight="true"
+                />
+
+        <TextView
+            android:id="@+id/stat_header_km"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kilometer"
+            android:textSize="11pt"
+            android:textStyle="italic|bold"
+            android:layout_below="@id/stat_label_kwh_highest"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            />
+
+            <TextView
+                android:id="@+id/stat_label_km_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gesamt"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_header_km"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_total_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_header_km"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_avg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Durchschnitt"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_total"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_avg_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_total"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_recent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zuletzt"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_avg"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_recent_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_avg"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_lowest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Geringste"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_recent"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_lowest_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_recent"
+                android:layout_alignParentRight="true"
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_highest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Höchste"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_lowest"
+
+                />
+
+            <TextView
+                android:id="@+id/stat_label_km_highest_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="10pt"
+                android:layout_below="@id/stat_label_km_lowest"
+                android:layout_alignParentRight="true"
+                />
+
+    </RelativeLayout>
+</ScrollView>
+

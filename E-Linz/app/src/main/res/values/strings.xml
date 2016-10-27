@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">E-Linz</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="service1_name">OpenDataConverter</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
+    <string name="title_activity_etanken">ETanken</string>
+    <string name="title_activity_another">Listenansicht</string>
+    <string name="title_activity_list">List</string>
+    <string name="title_activity_database">Database</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="socketTitle">verfügbare Stecker:</string>
+    <string name="fahrzeugtypen">für Fahrzeugtypen:</string>
+
+    <color name="bg_color">#ffffff</color>
+    <color name="bgButtonColor">#76f676</color>
+</resources>

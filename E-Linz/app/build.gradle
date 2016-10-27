@@ -1,0 +1,36 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 22
+        versionCode 2
+        versionName "2.1"
+    }
+}
+
+
+
+
+dependencies {
+    compile files('libs/json-simple-1.1.1.jar')
+    compile files('libs/gt-api-11.0.jar')
+    compile files('libs/gt-data-11.0.jar')
+    compile files('libs/gt-xml-11.0.jar')
+    compile files('libs/gt-xsd-gml3-11.0.jar')
+    compile files('libs/xml-commons-resolver-1.2.jar')
+    compile files('libs/gt-xsd-core-11.0.jar')
+    compile files('libs/net.opengis.fes-11.0.jar')
+    compile files('libs/net.opengis.ows-11.0.jar')
+    compile files('libs/net.opengis.wfs-11.0.jar')
+    compile files('libs/gt-opengis-11.0.jar')
+    //compile files('libs/google-play-services.jar')
+    compile files('libs/gson-2.2.4.jar')
+    compile 'com.android.support:appcompat-v7:25.+'
+    compile 'com.android.support:support-v4:25.+'
+    compile 'com.google.android.gms:play-services:3.1.36'
+    compile 'com.android.support:appcompat-v7:25.+'
+}

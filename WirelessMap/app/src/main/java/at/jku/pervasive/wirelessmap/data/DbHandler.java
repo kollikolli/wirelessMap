@@ -1,25 +1,36 @@
-package com.elinz.app;
+package at.jku.pervasive.wirelessmap.data;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.content.Context;
-import android.content.ContentValues;
-import android.database.Cursor;
+import android.widget.Toast;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import at.jku.pervasive.wirelessmap.model.Wifi;
 
 /**
  * Created by hari on 27.10.16.
  */
 
-public class MyDBHandler extends SQLiteOpenHelper{
+public class DbHandler extends SQLiteOpenHelper{
 
     public static synchronized void createInstance(Context context, String name,
-                          SQLiteDatabase.CursorFactory factory, int version){
+                                                   SQLiteDatabase.CursorFactory factory, int version){
         if(instance == null)
-            instance = new MyDBHandler(context, name, factory, version);
+            instance = new DbHandler(context, name, factory, version);
     }
 
-    private static MyDBHandler instance = null;
+    public static DbHandler getInstance(){
+        return instance;
+    }
 
+    private static DbHandler instance = null;
+
+    private final Context context;
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "WirelessMap.db";
     private static final String TABLE_WIFI = "wifi";
@@ -44,9 +55,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static final String COLUMN_GSMCELLID = "gsmcellid";
 
 
-    private MyDBHandler(Context context, String name,
-                       SQLiteDatabase.CursorFactory factory, int version) {
+    private DbHandler(Context context, String name,
+                     SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -98,7 +110,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public void addWIFI(WIFI wifi) {
+    public void addWIFI(Wifi wifi) {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_DB, wifi.get_db());
@@ -113,18 +125,19 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = this.getWritableDatabase();
 
+        Logger.getGlobal().log(Level.SEVERE, "JOWJDQOWJDOQWJODQJWODJQWDOQWJDOQWJDOQWJDOQWJDOQJWODQJWODQWJDOQWJDOQWJDOQWJDOQWJDOQWJDQOWJDOQWQWDOJQWODQJWODJQWODJQWODJQOWDJQWODJQOW");
         db.insert(TABLE_WIFI, null, values);
         db.close();
     }
 
-    public WIFI findWIFI(String ssid) {
+    public Wifi findWIFI(String ssid) {
         String query = "Select * FROM " + TABLE_WIFI + " WHERE " + COLUMN_SSID + " =  \"" + ssid + "\"";
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
 
-        WIFI wifi = new WIFI();
+        Wifi wifi = new Wifi();
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst();
@@ -156,7 +169,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         Cursor cursor = db.rawQuery(query, null);
 
-        WIFI wifi = new WIFI();
+        Wifi wifi = new Wifi();
 
         if (cursor.moveToFirst()) {
             wifi.set_wifiId(Integer.parseInt(cursor.getString(0)));

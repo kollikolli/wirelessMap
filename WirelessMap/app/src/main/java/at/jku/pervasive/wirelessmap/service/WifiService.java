@@ -10,6 +10,8 @@ import android.net.wifi.WifiManager;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -18,8 +20,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import at.jku.pervasive.wirelessmap.data.DbHandler;
 import at.jku.pervasive.wirelessmap.model.Wifi;
@@ -28,15 +28,19 @@ public class WifiService extends Service {
 
     private static final int SCAN_INTERVALL = 5000; // 5sec
 
-    private final IBinder thisBinder = new WifiServiceBinder();
-    private Handler handler;
-
     private WifiManager wifi;
 
     private Timer timer = new Timer();
-    private int scanCount = 0;
     private boolean scanning = false;
     private WifiScanListener wifiListener;
+
+
+    @Override
+    public int onStartCommand(Intent arg0, int arg1, int arg2) {
+        // Service should be explicitely started and stopped
+        return START_STICKY;
+    }
+
 
     @Override
     public void onCreate() {
@@ -44,14 +48,13 @@ public class WifiService extends Service {
 
         // request wifi service
         wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        // create handler (for toast message)
-        handler = new Handler();
         // register wifi listener
         wifiListener = new WifiScanListener();
         registerReceiver(wifiListener, new IntentFilter(
                 WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
-        Logger.getGlobal().log(Level.SEVERE, "ADD AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+        Log.d("ASDASD", "ADD AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
         startFingerPrinting();
     }
@@ -64,6 +67,12 @@ public class WifiService extends Service {
             timer.cancel();
         // unregister the wifi listener
         unregisterReceiver(wifiListener);
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
 
@@ -85,7 +94,6 @@ public class WifiService extends Service {
                 if (!scanning) {
                     wifi.startScan();
                     scanning = true;
-                    scanCount++;
                 }
             }
         };
@@ -93,21 +101,18 @@ public class WifiService extends Service {
         timer.scheduleAtFixedRate(tt, 0, SCAN_INTERVALL);
     }
 
-    protected void collectFingerprints() {
-
+    protected void collectSignals() {
         // get all available wifi signals
         wifi.startScan();
-
         List<ScanResult> scanRes = wifi.getScanResults();
 
-        // store in rssi database
-        updateRssiDatabase(scanRes);
+        // store in database
+        updateDatabase(scanRes);
     }
 
 
 
-    private void updateRssiDatabase(List<ScanResult> scanRes) {
-
+    private void updateDatabase(List<ScanResult> scanRes) {
         if (scanRes == null)
             return;
 
@@ -133,10 +138,9 @@ public class WifiService extends Service {
 
             LatLng currentLocation;
             if(GpsService.getInstance().canGetLocation()){
-                currentLocation = new LatLng(GpsService.getInstance().getLatitude(), GpsService.getInstance().getLongitude());
-            } else {
-                currentLocation = new LatLng(0.0, 0.0);
+                GpsService.getInstance().getLocation();
             }
+            currentLocation = new LatLng(GpsService.getInstance().getLatitude(), GpsService.getInstance().getLongitude());
             DbHandler.getInstance().addWIFI(
                 new Wifi(currRes.level, currRes.SSID, currRes.BSSID, currentLocation.longitude, currentLocation.latitude, String.valueOf(System.currentTimeMillis()))
             );
@@ -144,29 +148,11 @@ public class WifiService extends Service {
         }
     }
 
-    @Override
-    public int onStartCommand(Intent arg0, int arg1, int arg2) {
-        // Service should be explicitely started and stopped
-        return START_STICKY;
-    }
-
-    @Override
-    public IBinder onBind(Intent arg0) {
-        return thisBinder;
-    }
-
-    public class WifiServiceBinder extends Binder {
-
-        public WifiService getService() {
-            return WifiService.this;
-        }
-    }
-
     private class WifiScanListener extends BroadcastReceiver {
         public void onReceive(Context c, Intent intent) {
-            collectFingerprints();
-            // finished scanning
+            collectSignals();
             scanning = false;
         }
     }
+
 }

@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -46,6 +45,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="at.jku.pervasive.wirelessmap.service.WifiService"
+            android:enabled="true">
+        </service>
+        <service
+            android:name="at.jku.pervasive.wirelessmap.service.BluetoothService"
+            android:enabled="true">
+        </service>
+        <service
+            android:name="at.jku.pervasive.wirelessmap.service.CellService"
+            android:enabled="true">
+        </service>
     </application>
 
 </manifest>

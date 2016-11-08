@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.logging.Level;
@@ -82,7 +83,7 @@ public class DbHandler extends SQLiteOpenHelper{
                 COLUMN_LONGITUDE + " REAL," +
                 COLUMN_LATITUDE + " REAL," +
                 COLUMN_ALTITUDE + " REAL," +
-                COLUMN_SCANDATE + " TEXT," +
+                COLUMN_SCANDATE + " TEXT" +
                 ")";
         String CREATE_CELL_TABLE = "CREATE TABLE " +
                 TABLE_CELL + "("
@@ -125,7 +126,7 @@ public class DbHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Logger.getGlobal().log(Level.SEVERE, "JOWJDQOWJDOQWJODQJWODJQWDOQWJDOQWJDOQWJDOQWJDOQJWODQJWODQWJDOQWJDOQWJDOQWJDOQWJDOQWJDQOWJDOQWQWDOJQWODQJWODJQWODJQWODJQOWDJQWODJQOW");
+        Log.d("Write on Wifi Database", "SSID: "+ wifi.get_ssid() + " MAC: " + wifi.get_mac() + " LAT: " + wifi.get_latitude() + " LONG: "+wifi.get_longitude());
         db.insert(TABLE_WIFI, null, values);
         db.close();
     }

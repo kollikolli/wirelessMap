@@ -16,7 +16,8 @@ import android.util.Log;
 public class GpsService extends Service implements LocationListener {
 
     public static synchronized void createInstance(Context c){
-        instance = new GpsService(c);
+        if(instance == null)
+            instance = new GpsService(c);
     }
 
     public static GpsService getInstance(){

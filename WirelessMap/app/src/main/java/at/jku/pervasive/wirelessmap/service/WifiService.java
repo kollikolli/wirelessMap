@@ -145,6 +145,7 @@ public class WifiService extends Service {
                 new Wifi(currRes.level, currRes.SSID, currRes.BSSID, currentLocation.longitude, currentLocation.latitude, String.valueOf(System.currentTimeMillis()))
             );
             c++;
+
         }
     }
 

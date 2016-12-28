@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -13,9 +14,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import at.jku.pervasive.wirelessmap.data.DbHandler;
+import at.jku.pervasive.wirelessmap.model.Bluetooth;
+import at.jku.pervasive.wirelessmap.model.Cell;
+import at.jku.pervasive.wirelessmap.model.Wifi;
 import at.jku.pervasive.wirelessmap.service.BluetoothService;
 import at.jku.pervasive.wirelessmap.service.CellService;
 import at.jku.pervasive.wirelessmap.service.GpsService;
@@ -28,13 +37,13 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
     private WifiService wifi;
     private GpsService gps;
 
-
     Intent bluetoothServiceIntent;
     Intent cellServiceIntent;
     Intent wifiServiceIntent;
 
-    // Add a marker in Sydney and move the camera
-    private LatLng sydney = new LatLng(-34, 151);
+
+
+    public static final LatLng jku = new LatLng(48.335262, 14.324431);
 
 
     @Override
@@ -44,6 +53,7 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
 
         DbHandler.createInstance(this, null, null, 1);
         GpsService.createInstance(this);
+
 
         bluetoothServiceIntent = new Intent(this, BluetoothService.class);
         cellServiceIntent = new Intent(this, CellService.class);
@@ -88,7 +98,27 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.addMarker(new MarkerOptions().position(jku).title("Current Location"));
+        float cameraZoom = 19;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jku, cameraZoom));
+
+        drawMarkers();
+    }
+
+    private void drawMarkers() {
+        List<Wifi> wifis = DbHandler.getInstance().getWifis();
+        List<Cell> cells = DbHandler.getInstance().getCells();
+        //List<Bluetooth> bluetooths = DbHandler.getInstance().getBluetooths();
+
+
+        if(wifis.size() > 0) {
+            Wifi wifi = wifis.get(0);
+            MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate())).title("DB: " + wifi.get_db() + " SSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac());
+            mMap.addMarker(m);
+
+            Cell cell = cells.get(0);
+            MarkerOptions x = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(cell.get_scandate())).title("DB: " + cell.get_db() + " SSID: " + cell.get_gsmcellid());
+            mMap.addMarker(m);
+        }
     }
 }

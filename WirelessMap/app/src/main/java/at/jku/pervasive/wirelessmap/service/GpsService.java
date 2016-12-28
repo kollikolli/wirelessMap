@@ -10,8 +10,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import at.jku.pervasive.wirelessmap.data.DbHandler;
 
 public class GpsService extends Service implements LocationListener {
 
@@ -44,13 +50,15 @@ public class GpsService extends Service implements LocationListener {
     private double longitude; // longitude
 
     // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 10; // 10 secs
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
+
+    private Timer timer = new Timer();
 
     private GpsService(Context context) {
         this.mContext = context;
@@ -73,6 +81,7 @@ public class GpsService extends Service implements LocationListener {
             if (!isGPSEnabled && !isNetworkEnabled) {
                 // no network provider is enabled
             } else {
+
                 this.canGetLocation = true;
                 // First get location from Network Provider
                 if (isNetworkEnabled) {
@@ -87,6 +96,7 @@ public class GpsService extends Service implements LocationListener {
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
+                            DbHandler.getInstance().addLocation(new at.jku.pervasive.wirelessmap.model.Location(location.getAltitude(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), System.currentTimeMillis()));
                         }
                     }
                 }
@@ -104,10 +114,12 @@ public class GpsService extends Service implements LocationListener {
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
+                                DbHandler.getInstance().addLocation(new at.jku.pervasive.wirelessmap.model.Location(location.getAltitude(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), System.currentTimeMillis()));
                             }
                         }
                     }
                 }
+
             }
 
         } catch (Exception e) {
@@ -161,6 +173,24 @@ public class GpsService extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
+        if(locationManager!=null) {
+            location = locationManager
+                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                DbHandler.getInstance().addLocation(new at.jku.pervasive.wirelessmap.model.Location(location.getAltitude(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), System.currentTimeMillis()));
+            } else {
+                location = locationManager
+                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location != null) {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    DbHandler.getInstance().addLocation(new at.jku.pervasive.wirelessmap.model.Location(location.getAltitude(), location.getLatitude(), location.getLongitude(), location.getAccuracy(), System.currentTimeMillis()));
+                }
+            }
+        }
+
     }
 
     @Override

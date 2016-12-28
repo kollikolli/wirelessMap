@@ -9,10 +9,7 @@ public class Cell {
     private int _cellId;
     private int _db;
     private int _gsmcellid;
-    private float _longitude;
-    private float _latitude;
-    private float _altitude;
-    private String _scandate;
+    private long _scandate;
     private float _bandwith;
     private int _latency;
 
@@ -23,13 +20,9 @@ public class Cell {
         this._gsmcellid = _gsmcellid;
     }
 
-    public Cell(int wifiId, int db, int gsmcellid, String mac, float lon, float lat, float alt, String scandt, float bandwith, int latency) {
-        this.set_cellId(wifiId);
+    public Cell(int db, int gsmcellid, long scandt, float bandwith, int latency) {
         this.set_db(db);
         this.set_gsmcellid(gsmcellid);
-        this.set_longitude(lon);
-        this.set_latitude(lat);
-        this.set_altitude(alt);
         this.set_scandate(scandt);
         this.set_bandwith(bandwith);
         this.set_latency(latency);
@@ -60,35 +53,11 @@ public class Cell {
         this._gsmcellid = gsmcellid;
     }
 
-    public float get_longitude() {
-        return _longitude;
-    }
-
-    public void set_longitude(float _longitude) {
-        this._longitude = _longitude;
-    }
-
-    public float get_latitude() {
-        return _latitude;
-    }
-
-    public void set_latitude(float _latitude) {
-        this._latitude = _latitude;
-    }
-
-    public float get_altitude() {
-        return _altitude;
-    }
-
-    public void set_altitude(float _altitude) {
-        this._altitude = _altitude;
-    }
-
-    public String get_scandate() {
+    public long get_scandate() {
         return _scandate;
     }
 
-    public void set_scandate(String _scandate) {
+    public void set_scandate(long _scandate) {
         this._scandate = _scandate;
     }
 

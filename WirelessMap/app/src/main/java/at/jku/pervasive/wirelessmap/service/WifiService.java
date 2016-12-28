@@ -26,7 +26,7 @@ import at.jku.pervasive.wirelessmap.model.Wifi;
 
 public class WifiService extends Service {
 
-    private static final int SCAN_INTERVALL = 5000; // 5sec
+    private static final int SCAN_INTERVALL = 20; // 5sec
 
     private WifiManager wifi;
 
@@ -52,9 +52,6 @@ public class WifiService extends Service {
         wifiListener = new WifiScanListener();
         registerReceiver(wifiListener, new IntentFilter(
                 WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-
-
-        Log.d("ASDASD", "ADD AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
         startFingerPrinting();
     }
@@ -136,13 +133,9 @@ public class WifiService extends Service {
                 break;
             // add signals to scan
 
-            LatLng currentLocation;
-            if(GpsService.getInstance().canGetLocation()){
-                GpsService.getInstance().getLocation();
-            }
-            currentLocation = new LatLng(GpsService.getInstance().getLatitude(), GpsService.getInstance().getLongitude());
+
             DbHandler.getInstance().addWIFI(
-                new Wifi(currRes.level, currRes.SSID, currRes.BSSID, currentLocation.longitude, currentLocation.latitude, String.valueOf(System.currentTimeMillis()))
+                new Wifi(currRes.level, currRes.SSID, currRes.BSSID, System.currentTimeMillis())
             );
             c++;
 

@@ -10,10 +10,7 @@ public class Bluetooth {
     private int _db;
     private String _name;
     private String _mac;
-    private float _longitude;
-    private float _latitude;
-    private float _altitude;
-    private String _scandate;
+    private long _scandate;
 
     public Bluetooth() {
 
@@ -22,14 +19,10 @@ public class Bluetooth {
         this._name = name;
     }
 
-    public Bluetooth(int wifiId, int db, String ssid, String mac, float lon, float lat, float alt, String scandt, float bandwith, int latency) {
-        this.set_bluetoothId(wifiId);
+    public Bluetooth(int db, String ssid, String mac, long scandt, float bandwith, int latency) {
         this.set_db(db);
         this.set_name(ssid);
         this.set_mac(mac);
-        this.set_longitude(lon);
-        this.set_latitude(lat);
-        this.set_altitude(alt);
         this.set_scandate(scandt);
     }
 
@@ -66,35 +59,11 @@ public class Bluetooth {
         this._mac = _mac;
     }
 
-    public float get_longitude() {
-        return _longitude;
-    }
-
-    public void set_longitude(float _longitude) {
-        this._longitude = _longitude;
-    }
-
-    public float get_latitude() {
-        return _latitude;
-    }
-
-    public void set_latitude(float _latitude) {
-        this._latitude = _latitude;
-    }
-
-    public float get_altitude() {
-        return _altitude;
-    }
-
-    public void set_altitude(float _altitude) {
-        this._altitude = _altitude;
-    }
-
-    public String get_scandate() {
+    public long get_scandate() {
         return _scandate;
     }
 
-    public void set_scandate(String _scandate) {
+    public void set_scandate(long _scandate) {
         this._scandate = _scandate;
     }
 

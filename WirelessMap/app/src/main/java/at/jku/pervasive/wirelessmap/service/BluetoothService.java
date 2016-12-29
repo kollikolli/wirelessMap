@@ -44,7 +44,8 @@ public class BluetoothService extends Service {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                DbHandler.getInstance().addBluetooth(new Bluetooth(device.getType(), device.getName(), device.getAddress(), System.currentTimeMillis(), 0, 0));
+                DbHandler.getInstance().addBluetooth(new Bluetooth(device.getType(), device.getName(), device.getAddress(), System.currentTimeMillis(), 0, 0,
+                        device.getBluetoothClass().getDeviceClass(), device.getBondState()));
             }
         }
     };

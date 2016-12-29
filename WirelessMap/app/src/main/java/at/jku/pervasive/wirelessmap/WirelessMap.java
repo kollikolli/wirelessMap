@@ -1,22 +1,43 @@
 package at.jku.pervasive.wirelessmap;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +45,7 @@ import java.util.TimerTask;
 import at.jku.pervasive.wirelessmap.data.DbHandler;
 import at.jku.pervasive.wirelessmap.model.Bluetooth;
 import at.jku.pervasive.wirelessmap.model.Cell;
+import at.jku.pervasive.wirelessmap.model.KmlMarkerOptions;
 import at.jku.pervasive.wirelessmap.model.Wifi;
 import at.jku.pervasive.wirelessmap.service.BluetoothService;
 import at.jku.pervasive.wirelessmap.service.CellService;
@@ -33,6 +55,8 @@ import at.jku.pervasive.wirelessmap.service.WifiService;
 public class WirelessMap extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Marker marker;
+    Context mCtx = this;
 
     private WifiService wifi;
     private GpsService gps;
@@ -40,11 +64,33 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
     Intent bluetoothServiceIntent;
     Intent cellServiceIntent;
     Intent wifiServiceIntent;
-
+    //List<MarkerOptions> lkml = new ArrayList<MarkerOptions>();
+    List<CircleOptions> lkml = new ArrayList<CircleOptions>();
+    HashMap<String, String> meMap=new HashMap<String, String>();
+    final int MARKER_UPDATE_INTERVAL = 10000; /* milliseconds */
+    Handler handler = new Handler();
 
 
     public static final LatLng jku = new LatLng(48.335262, 14.324431);
+    public static final LatLng jku2 = new LatLng(48.3280601501465, 14.3236999511719);
 
+
+    Runnable updateMarker = new Runnable() {
+        @Override
+        public void run() {
+            //marker.remove();
+            //marker = mMap.addMarker(new MarkerOptions().position(jku2).title("Current Location2"));
+            //float cameraZoom = 19;
+            //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jku2, cameraZoom));
+            drawMarkers();
+            handler.postDelayed(this, MARKER_UPDATE_INTERVAL);
+        }
+    };
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +110,16 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        handler.postDelayed(updateMarker, MARKER_UPDATE_INTERVAL);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     protected void onDestroy() {
+        handler.removeCallbacks(updateMarker);
         super.onDestroy();
         stopScannerServices();
     }
@@ -97,28 +149,132 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+            @Override
+            public void onCircleClick(Circle circle) {
+                if (meMap.keySet().contains(circle.getCenter().toString())) {
+                    String value=(String)meMap.get(circle.getCenter().toString());
+                    Toast.makeText(mCtx, value, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
-        mMap.addMarker(new MarkerOptions().position(jku).title("Current Location"));
-        float cameraZoom = 19;
+        marker = mMap.addMarker(new MarkerOptions().position(jku).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+        float cameraZoom = 1;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jku, cameraZoom));
 
-        drawMarkers();
+
     }
 
     private void drawMarkers() {
+        lkml.clear();
         List<Wifi> wifis = DbHandler.getInstance().getWifis();
         List<Cell> cells = DbHandler.getInstance().getCells();
-        //List<Bluetooth> bluetooths = DbHandler.getInstance().getBluetooths();
-
-
-        if(wifis.size() > 0) {
-            Wifi wifi = wifis.get(0);
-            MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate())).title("DB: " + wifi.get_db() + " SSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac());
-            mMap.addMarker(m);
-
-            Cell cell = cells.get(0);
-            MarkerOptions x = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(cell.get_scandate())).title("DB: " + cell.get_db() + " SSID: " + cell.get_gsmcellid());
-            mMap.addMarker(m);
+        List<Bluetooth> bluetooths = DbHandler.getInstance().getBluetooths();
+        for (int i = 0; i < wifis.size(); i++) {
+            Wifi wifi = wifis.get(i);
+            CircleOptions c = new CircleOptions()
+                    .center(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate()))
+                    .radius(10000)
+                    .clickable(true)
+                    .strokeColor(Color.GREEN)
+                    .strokeWidth((float) 50);
+            //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate())).title("DB: " + wifi.get_db() + " SSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            //lkml.add(m);
+            lkml.add(c);
+            meMap.put(c.getCenter().toString(), "DB: " + wifi.get_db() + "\nSSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac());
         }
+        for (int i = 0; i < cells.size(); i++) {
+            Cell cell = cells.get(i);
+            CircleOptions c = new CircleOptions()
+                    .center(DbHandler.getInstance().getLocationAtTime(cell.get_scandate()))
+                    .radius(10000)
+                    .clickable(true)
+                    .strokeColor(Color.YELLOW)
+                    .strokeWidth((float) 50);
+            //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(cell.get_scandate())).title("DB: " + cell.get_db() + " SSID: " + cell.get_gsmcellid()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            //lkml.add(m);
+            lkml.add(c);
+            meMap.put(c.getCenter().toString(), "DB: " + cell.get_db() + "\nSSID: " + cell.get_gsmcellid());
+        }
+        /*for (int i = 0; i < bluetooths.size(); i++) {
+            Bluetooth bluetooth = bluetooths.get(i);
+            CircleOptions c = new CircleOptions()
+                    .center(DbHandler.getInstance().getLocationAtTime(bluetooth.get_scandate()))
+                    .radius(10000)
+                    .clickable(true)
+                    .strokeColor(Color.GREEN)
+                    .strokeWidth((float) 50);
+            //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate())).title("DB: " + wifi.get_db() + " SSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            //lkml.add(m);
+            lkml.add(c);
+            meMap.put(c.getCenter().toString(), "DB: " + bluetooth.get_db() + "\nName: " + bluetooth.get_name() + " \nMAC: " + bluetooth.get_mac());
+        }*/
+
+        new LoadMarkerBitmapDescriptor(this, mMap).execute(lkml);
+    }
+
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("WirelessMap Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+}
+class LoadMarkerBitmapDescriptor extends
+        AsyncTask<List<CircleOptions>, Void, List<CircleOptions>> {
+
+    Context c;
+    GoogleMap mMap;
+
+    public LoadMarkerBitmapDescriptor(Context context, GoogleMap mmap)
+    {
+        c = context;
+        mMap = mmap;
+    }
+
+    @Override
+    protected List<CircleOptions> doInBackground(List<CircleOptions>... params) {
+        List<CircleOptions> kmlmarkeroptions = params[0];
+        return kmlmarkeroptions;
+    }
+
+
+    protected void onPostExecute(List<CircleOptions> result) {
+        for (int i  = 0; i< result.size(); i++) {
+            CircleOptions kmlmarkeroption = result.get(i);
+            mMap.addCircle(kmlmarkeroption);
+        }
+
     }
 }

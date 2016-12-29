@@ -11,6 +11,8 @@ public class Bluetooth {
     private String _name;
     private String _mac;
     private long _scandate;
+    private int _deviceclass;
+    private int _bondstate;
 
     public Bluetooth() {
 
@@ -19,11 +21,13 @@ public class Bluetooth {
         this._name = name;
     }
 
-    public Bluetooth(int db, String ssid, String mac, long scandt, float bandwith, int latency) {
+    public Bluetooth(int db, String ssid, String mac, long scandt, float bandwith, int latency, int _deviceclass, int _bondstate) {
         this.set_db(db);
         this.set_name(ssid);
         this.set_mac(mac);
         this.set_scandate(scandt);
+        this.set_deviceclass(_deviceclass);
+        this.set_bondstate(_bondstate);
     }
 
 
@@ -68,4 +72,19 @@ public class Bluetooth {
     }
 
 
+    public int get_deviceclass() {
+        return _deviceclass;
+    }
+
+    public void set_deviceclass(int _deviceclass) {
+        this._deviceclass = _deviceclass;
+    }
+
+    public int get_bondstate() {
+        return _bondstate;
+    }
+
+    public void set_bondstate(int _bondstate) {
+        this._bondstate = _bondstate;
+    }
 }

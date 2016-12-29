@@ -55,15 +55,25 @@ public class DbHandler extends SQLiteOpenHelper{
     public static final String COLUMN_SCANDATE = "scandate";
     public static final String COLUMN_BANDWITH = "bandwith";
     public static final String COLUMN_LATENCY = "latency";
+    public static final String COLUMN_FREQUENCY = "frequency";
+    public static final String COLUMN_CAPABILITIES = "capabilities";
+    public static final String COLUMN_CHANNELWIDTH = "channelWidth";
 
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_LATITUDE = "latitude";
     public static final String COLUMN_ALTITUDE = "altitude";
     public static final String COLUMN_ACCURACY = "accuracy";
-
+    public static final String COLUMN_LAC = "lac";
+    public static final String COLUMN_PSC = "psc";
+    public static final String COLUMN_BSLATITUDE = "bslatitude";
+    public static final String COLUMN_BSLONGITUDE = "bslongitude";
+    public static final String COLUMN_NETWORKID = "networkid";
+    public static final String COLUMN_SYSID = "sysid";
 
     public static final String COLUMN_ID2 = "_bluetoothId";
     public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_DEVICECLASS = "deviceclass";
+    public static final String COLUMN_BONDSTATE = "bondstate";
 
     public static final String COLUMN_ID3 = "_cellId";
     public static final String COLUMN_GSMCELLID = "gsmcellid";
@@ -82,6 +92,9 @@ public class DbHandler extends SQLiteOpenHelper{
                 + COLUMN_ID + " INTEGER," + COLUMN_DB
                 + " INTEGER," + COLUMN_SSID + " TEXT," +
                 COLUMN_MAC + " TEXT," +
+                COLUMN_FREQUENCY + " INTEGER," +
+                COLUMN_CAPABILITIES + " TEXT," +
+                COLUMN_CHANNELWIDTH + " INTEGER," +
                 COLUMN_SCANDATE + " INTEGER PRIMARY KEY," +
                 COLUMN_BANDWITH + " REAL," +
                 COLUMN_LATENCY + " INTEGER" +
@@ -90,6 +103,8 @@ public class DbHandler extends SQLiteOpenHelper{
                 TABLE_BLUETOOTH + "("
                 + COLUMN_ID2 + " INTEGER," + COLUMN_DB
                 + " INTEGER," + COLUMN_NAME + " TEXT," +
+                 COLUMN_BONDSTATE + " INTEGER," +
+                 COLUMN_DEVICECLASS + " INTEGER," +
                  COLUMN_MAC + " TEXT," +
                 COLUMN_SCANDATE + " INTEGER PRIMARY KEY" +
                 ")";
@@ -99,6 +114,12 @@ public class DbHandler extends SQLiteOpenHelper{
                 + " INTEGER," +
                 COLUMN_SCANDATE + " INTEGER PRIMARY KEY," +
                 COLUMN_GSMCELLID + " INTEGER," +
+                COLUMN_LAC + " INTEGER," +
+                COLUMN_PSC + " INTEGER," +
+                COLUMN_BSLATITUDE + " INTEGER," +
+                COLUMN_BSLONGITUDE + " INTEGER," +
+                COLUMN_NETWORKID + " INTEGER," +
+                COLUMN_SYSID + " INTEGER," +
                 COLUMN_BANDWITH + " REAL," +
                 COLUMN_LATENCY + " INTEGER" +
                 ")";
@@ -135,10 +156,12 @@ public class DbHandler extends SQLiteOpenHelper{
         values.put(COLUMN_SCANDATE, wifi.get_scandate());
         values.put(COLUMN_BANDWITH, wifi.get_bandwith());
         values.put(COLUMN_LATENCY, wifi.get_latency());
-
+        values.put(COLUMN_FREQUENCY, wifi.get_frequency());
+        values.put(COLUMN_CAPABILITIES, wifi.get_capabilities());
+        values.put(COLUMN_CHANNELWIDTH, wifi.get_capabilities());
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //Log.d("Write on Wifi Database", "SSID: "+ wifi.get_ssid() + " MAC: " + wifi.get_mac());
+        Log.d("Write on Wifi Database", "SSID: "+ wifi.get_ssid() + " MAC: " + wifi.get_mac());
         db.insert(TABLE_WIFI, null, values);
         db.close();
     }
@@ -162,8 +185,10 @@ public class DbHandler extends SQLiteOpenHelper{
         values.put(COLUMN_SCANDATE, bluetooth.get_scandate());
         values.put(COLUMN_DB, bluetooth.get_db());
         values.put(COLUMN_MAC, bluetooth.get_mac());
-        values.put(COLUMN_NAME, bluetooth.get_bluetoothId());
+        values.put(COLUMN_ID2, bluetooth.get_bluetoothId());
         values.put(COLUMN_NAME, bluetooth.get_name());
+        values.put(COLUMN_DEVICECLASS, bluetooth.get_deviceclass());
+        values.put(COLUMN_BONDSTATE, bluetooth.get_bondstate());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -181,6 +206,12 @@ public class DbHandler extends SQLiteOpenHelper{
         values.put(COLUMN_GSMCELLID, cell.get_cellId());
         values.put(COLUMN_LATENCY, cell.get_latency());
         values.put(COLUMN_BANDWITH, cell.get_bandwith());
+        values.put(COLUMN_LAC, cell.get_lac());
+        values.put(COLUMN_PSC, cell.get_psc());
+        values.put(COLUMN_BSLATITUDE, cell.get_bslatitude());
+        values.put(COLUMN_BSLONGITUDE, cell.get_bslongitude());
+        values.put(COLUMN_NETWORKID, cell.get_networkid());
+        values.put(COLUMN_SYSID, cell.get_sysid());
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -268,7 +299,7 @@ public class DbHandler extends SQLiteOpenHelper{
     public List<Cell> getCells() {
         List<Cell> cells = new ArrayList<>();
 
-        String query = "Select * FROM " + TABLE_WIFI;
+        String query = "Select * FROM " + TABLE_CELL;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -312,6 +343,24 @@ public class DbHandler extends SQLiteOpenHelper{
         db.close();
 
         return bluetooths;
+    }
+
+    public String getDataFromCircle(LatLng pos) {
+        float latit = (float) pos.latitude;
+        float longit = (float) pos.longitude;
+
+        String query = "Select scandate, longitude, latitude FROM " + TABLE_LOCATION + " WHERE latitude = 37.421997";// + (float) latit + ""; // + " AND " + COLUMN_LATITUDE + " =  " + latit + "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToNext()){
+            long scandate = cursor.getLong(0);
+            float longi = cursor.getFloat(1);
+            float lati = cursor.getFloat(2);
+            cursor.close();
+            db.close();
+        }
+        return null;
     }
 
     public LatLng getLocationAtTime(long scandate){

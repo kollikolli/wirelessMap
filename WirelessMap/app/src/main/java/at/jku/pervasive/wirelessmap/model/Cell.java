@@ -12,6 +12,12 @@ public class Cell {
     private long _scandate;
     private float _bandwith;
     private int _latency;
+    private int _lac;
+    private int _psc;
+    private int _bslatitude;
+    private int _bslongitude;
+    private int _networkid;
+    private int _sysid;
 
     public Cell() {
 
@@ -20,12 +26,18 @@ public class Cell {
         this._gsmcellid = _gsmcellid;
     }
 
-    public Cell(int db, int gsmcellid, long scandt, float bandwith, int latency) {
+    public Cell(int db, int gsmcellid, long scandt, float bandwith, int latency, int _lac, int _psc, int _bslatitude, int _bslongitude, int _networkid, int _sysid) {
         this.set_db(db);
         this.set_gsmcellid(gsmcellid);
         this.set_scandate(scandt);
         this.set_bandwith(bandwith);
         this.set_latency(latency);
+        this.set_lac(_lac);
+        this.set_psc(_psc);
+        this.set_bslatitude(_bslatitude);
+        this.set_bslongitude(_bslongitude);
+        this.set_networkid(_networkid);
+        this.set_sysid(_sysid);
     }
 
 
@@ -78,4 +90,51 @@ public class Cell {
     }
 
 
+    public int get_lac() {
+        return _lac;
+    }
+
+    public void set_lac(int _lac) {
+        this._lac = _lac;
+    }
+
+    public int get_psc() {
+        return _psc;
+    }
+
+    public void set_psc(int _psc) {
+        this._psc = _psc;
+    }
+
+    public int get_bslatitude() {
+        return _bslatitude;
+    }
+
+    public void set_bslatitude(int _bslatitude) {
+        this._bslatitude = _bslatitude;
+    }
+
+    public int get_bslongitude() {
+        return _bslongitude;
+    }
+
+    public void set_bslongitude(int _bslongitude) {
+        this._bslongitude = _bslongitude;
+    }
+
+    public int get_networkid() {
+        return _networkid;
+    }
+
+    public void set_networkid(int _networkid) {
+        this._networkid = _networkid;
+    }
+
+    public int get_sysid() {
+        return _sysid;
+    }
+
+    public void set_sysid(int _sysid) {
+        this._sysid = _sysid;
+    }
 }

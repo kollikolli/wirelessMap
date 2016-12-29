@@ -40,14 +40,27 @@ public class CellService extends Service {
             super.onSignalStrengthsChanged(signalStrength);
             CellLocation cellLocation = mTelephonyManager.getCellLocation();
             int cellId = -1;
+            int lac = -1;
+            int psc = -1;
+            int bslatitude = -1;
+            int bslongitude = -1;
+            int networkid = -1;
+            int sysid = -1;
             if(cellLocation instanceof GsmCellLocation){
                 cellId = ((GsmCellLocation) cellLocation).getCid();
+                lac = ((GsmCellLocation) cellLocation).getLac();
+                psc = ((GsmCellLocation) cellLocation).getPsc();
             } else if(cellLocation instanceof CdmaCellLocation){
                 cellId = ((CdmaCellLocation) cellLocation).getBaseStationId();
+                bslatitude = ((CdmaCellLocation) cellLocation).getBaseStationLatitude();
+                bslongitude = ((CdmaCellLocation) cellLocation).getBaseStationLongitude();
+                networkid = ((CdmaCellLocation) cellLocation).getNetworkId();
+                sysid = ((CdmaCellLocation) cellLocation).getSystemId();
             }
             int db = (2 * signalStrength.getGsmSignalStrength()) - 113; // -> dBm
 
-            DbHandler.getInstance().addCell(new Cell(db, cellId, System.currentTimeMillis(), 0,0));
+            DbHandler.getInstance().addCell(new Cell(db, cellId, System.currentTimeMillis(), 0,0,
+                    lac, psc, bslatitude, bslongitude, networkid, sysid));
         }
     };
 

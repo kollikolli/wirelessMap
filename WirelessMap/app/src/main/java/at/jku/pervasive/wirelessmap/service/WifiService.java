@@ -135,7 +135,8 @@ public class WifiService extends Service {
 
 
             DbHandler.getInstance().addWIFI(
-                new Wifi(currRes.level, currRes.SSID, currRes.BSSID, System.currentTimeMillis())
+                new Wifi(currRes.level, currRes.SSID, currRes.BSSID, System.currentTimeMillis(),
+                        currRes.frequency, currRes.capabilities, currRes.channelWidth)
             );
             c++;
 

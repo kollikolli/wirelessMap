@@ -13,16 +13,22 @@ public class Wifi {
     private long _scandate;
     private float _bandwith;
     private int _latency;
+    private int _frequency;
+    private String _capabilities;
+    private int _channelWidth;
 
     public Wifi() {
 
     }
 
-    public Wifi(int _db, String _ssid, String _mac, long _scandate) {
+    public Wifi(int _db, String _ssid, String _mac, long _scandate, int _frequency, String _capabilities, int _channelWidth) {
         this._db = _db;
         this._ssid = _ssid;
         this._mac = _mac;
         this._scandate = _scandate;
+        this._frequency = _frequency;
+        this._capabilities = _capabilities;
+        this._channelWidth = _channelWidth;
     }
 
     public Wifi(String ssid) {
@@ -97,4 +103,27 @@ public class Wifi {
     }
 
 
+    public int get_frequency() {
+        return _frequency;
+    }
+
+    public void set_frequency(int _frequency) {
+        this._frequency = _frequency;
+    }
+
+    public String get_capabilities() {
+        return _capabilities;
+    }
+
+    public void set_capabilities(String _capabilities) {
+        this._capabilities = _capabilities;
+    }
+
+    public int get_channelWidth() {
+        return _channelWidth;
+    }
+
+    public void set_channelWidth(int _channelWidth) {
+        this._channelWidth = _channelWidth;
+    }
 }

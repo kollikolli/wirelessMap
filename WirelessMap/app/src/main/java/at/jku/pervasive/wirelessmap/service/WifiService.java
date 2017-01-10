@@ -26,7 +26,7 @@ import at.jku.pervasive.wirelessmap.model.Wifi;
 
 public class WifiService extends Service {
 
-    private static final int SCAN_INTERVALL = 20; // 5sec
+    private static final int SCAN_INTERVALL = 20000;
 
     private WifiManager wifi;
 
@@ -100,7 +100,6 @@ public class WifiService extends Service {
 
     protected void collectSignals() {
         // get all available wifi signals
-        wifi.startScan();
         List<ScanResult> scanRes = wifi.getScanResults();
 
         // store in database
@@ -136,7 +135,7 @@ public class WifiService extends Service {
 
             DbHandler.getInstance().addWIFI(
                 new Wifi(currRes.level, currRes.SSID, currRes.BSSID, System.currentTimeMillis(),
-                        currRes.frequency, currRes.capabilities, currRes.channelWidth)
+                        currRes.frequency, currRes.capabilities, 0)
             );
             c++;
 

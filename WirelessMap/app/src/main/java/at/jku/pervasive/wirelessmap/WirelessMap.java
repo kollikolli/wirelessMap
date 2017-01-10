@@ -56,6 +56,7 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
 
     private GoogleMap mMap;
     private Marker marker;
+    private static boolean firstRun = true;
     Context mCtx = this;
 
     private WifiService wifi;
@@ -82,6 +83,7 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
             //marker = mMap.addMarker(new MarkerOptions().position(jku2).title("Current Location2"));
             //float cameraZoom = 19;
             //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jku2, cameraZoom));
+
             drawMarkers();
             handler.postDelayed(this, MARKER_UPDATE_INTERVAL);
         }
@@ -149,15 +151,18 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
-            @Override
-            public void onCircleClick(Circle circle) {
-                if (meMap.keySet().contains(circle.getCenter().toString())) {
-                    String value=(String)meMap.get(circle.getCenter().toString());
-                    Toast.makeText(mCtx, value, Toast.LENGTH_LONG).show();
+        if(firstRun)
+            mMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+                @Override
+                public void onCircleClick(Circle circle) {
+                    if (meMap.keySet().contains(circle.getCenter().toString())) {
+                        String value=(String)meMap.get(circle.getCenter().toString());
+                        Toast.makeText(mCtx, value, Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+
+        firstRun = false;
 
         marker = mMap.addMarker(new MarkerOptions().position(jku).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
         float cameraZoom = 1;
@@ -175,10 +180,9 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
             Wifi wifi = wifis.get(i);
             CircleOptions c = new CircleOptions()
                     .center(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate()))
-                    .radius(10000)
+                    .radius(10)
                     .clickable(true)
-                    .strokeColor(Color.GREEN)
-                    .strokeWidth((float) 50);
+                    .fillColor(Color.GREEN);
             //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate())).title("DB: " + wifi.get_db() + " SSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             //lkml.add(m);
             lkml.add(c);
@@ -188,10 +192,9 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
             Cell cell = cells.get(i);
             CircleOptions c = new CircleOptions()
                     .center(DbHandler.getInstance().getLocationAtTime(cell.get_scandate()))
-                    .radius(10000)
+                    .radius(100)
                     .clickable(true)
-                    .strokeColor(Color.YELLOW)
-                    .strokeWidth((float) 50);
+                    .fillColor(Color.YELLOW);
             //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(cell.get_scandate())).title("DB: " + cell.get_db() + " SSID: " + cell.get_gsmcellid()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             //lkml.add(m);
             lkml.add(c);

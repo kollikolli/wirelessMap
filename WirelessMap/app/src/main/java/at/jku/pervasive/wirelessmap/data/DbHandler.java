@@ -40,7 +40,7 @@ public class DbHandler extends SQLiteOpenHelper{
     private static DbHandler instance = null;
 
     private final Context context;
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     private static final String DATABASE_NAME = "WirelessMap_1.db";
     private static final String TABLE_WIFI = "wifi";

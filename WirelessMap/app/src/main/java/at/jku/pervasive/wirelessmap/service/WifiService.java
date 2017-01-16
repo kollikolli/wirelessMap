@@ -132,7 +132,6 @@ public class WifiService extends Service {
                 break;
             // add signals to scan
 
-
             DbHandler.getInstance().addWIFI(
                 new Wifi(currRes.level, currRes.SSID, currRes.BSSID, System.currentTimeMillis(),
                         currRes.frequency, currRes.capabilities, 0)

@@ -46,6 +46,7 @@ import at.jku.pervasive.wirelessmap.data.DbHandler;
 import at.jku.pervasive.wirelessmap.model.Bluetooth;
 import at.jku.pervasive.wirelessmap.model.Cell;
 import at.jku.pervasive.wirelessmap.model.KmlMarkerOptions;
+import at.jku.pervasive.wirelessmap.model.WMOptions;
 import at.jku.pervasive.wirelessmap.model.Wifi;
 import at.jku.pervasive.wirelessmap.service.BluetoothService;
 import at.jku.pervasive.wirelessmap.service.CellService;
@@ -165,7 +166,7 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
         firstRun = false;
 
         marker = mMap.addMarker(new MarkerOptions().position(jku).title("Current Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-        float cameraZoom = 1;
+        float cameraZoom = 13;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jku, cameraZoom));
 
 
@@ -176,9 +177,16 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
         List<Wifi> wifis = DbHandler.getInstance().getWifis();
         List<Cell> cells = DbHandler.getInstance().getCells();
         List<Bluetooth> bluetooths = DbHandler.getInstance().getBluetooths();
+        List<WMOptions> wmos = new ArrayList<>();
+        LatLng prev = new LatLng(1,1);
         for (int i = 0; i < wifis.size(); i++) {
             Wifi wifi = wifis.get(i);
-            CircleOptions c = new CircleOptions()
+            LatLng curr = DbHandler.getInstance().getLocationAtTime(wifi.get_scandate());
+            if (curr.latitude != prev.latitude && curr.longitude != prev.longitude) {
+                wmos.add(DbHandler.getInstance().getWMORange(wifi.get_scandate()));
+            }
+            prev = curr;
+            /*CircleOptions c = new CircleOptions()
                     .center(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate()))
                     .radius(10)
                     .clickable(true)
@@ -186,11 +194,17 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
             //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate())).title("DB: " + wifi.get_db() + " SSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             //lkml.add(m);
             lkml.add(c);
-            meMap.put(c.getCenter().toString(), "DB: " + wifi.get_db() + "\nSSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac());
+            meMap.put(c.getCenter().toString(), "DB: " + wifi.get_db() + "\nSSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac());*/
         }
+        prev = new LatLng(1,1);
         for (int i = 0; i < cells.size(); i++) {
             Cell cell = cells.get(i);
-            CircleOptions c = new CircleOptions()
+            LatLng curr = DbHandler.getInstance().getLocationAtTime(cell.get_scandate());
+            if (curr.latitude != prev.latitude && curr.longitude != prev.longitude) {
+                wmos.add(DbHandler.getInstance().getWMORange(cell.get_scandate()));
+            }
+            prev = curr;
+            /*CircleOptions c = new CircleOptions()
                     .center(DbHandler.getInstance().getLocationAtTime(cell.get_scandate()))
                     .radius(100)
                     .clickable(true)
@@ -198,11 +212,17 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
             //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(cell.get_scandate())).title("DB: " + cell.get_db() + " SSID: " + cell.get_gsmcellid()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             //lkml.add(m);
             lkml.add(c);
-            meMap.put(c.getCenter().toString(), "DB: " + cell.get_db() + "\nSSID: " + cell.get_gsmcellid());
+            meMap.put(c.getCenter().toString(), "DB: " + cell.get_db() + "\nSSID: " + cell.get_gsmcellid());*/
         }
-        /*for (int i = 0; i < bluetooths.size(); i++) {
+        prev = new LatLng(1,1);
+        for (int i = 0; i < bluetooths.size(); i++) {
             Bluetooth bluetooth = bluetooths.get(i);
-            CircleOptions c = new CircleOptions()
+            LatLng curr = DbHandler.getInstance().getLocationAtTime(bluetooth.get_scandate());
+            if (curr.latitude != prev.latitude && curr.longitude != prev.longitude) {
+                wmos.add(DbHandler.getInstance().getWMORange(bluetooth.get_scandate()));
+            }
+            prev = curr;
+            /*CircleOptions c = new CircleOptions()
                     .center(DbHandler.getInstance().getLocationAtTime(bluetooth.get_scandate()))
                     .radius(10000)
                     .clickable(true)
@@ -211,8 +231,20 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
             //MarkerOptions m = new MarkerOptions().position(DbHandler.getInstance().getLocationAtTime(wifi.get_scandate())).title("DB: " + wifi.get_db() + " SSID: " + wifi.get_ssid() + " \nMAC: " + wifi.get_mac()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             //lkml.add(m);
             lkml.add(c);
-            meMap.put(c.getCenter().toString(), "DB: " + bluetooth.get_db() + "\nName: " + bluetooth.get_name() + " \nMAC: " + bluetooth.get_mac());
-        }*/
+            meMap.put(c.getCenter().toString(), "DB: " + bluetooth.get_db() + "\nName: " + bluetooth.get_name() + " \nMAC: " + bluetooth.get_mac());*/
+        }
+        for (int i = 0; i<wmos.size(); i++) {
+            WMOptions wmo = wmos.get(i);
+            CircleOptions c = new CircleOptions()
+                    .center(wmo.getLoc())
+                    .radius(wmo.getCountsignals())
+                    .clickable(true)
+                    .strokeColor(wmo.getColor())
+                    .strokeWidth(1)
+                    .fillColor(wmo.getColor());
+            lkml.add(c);
+            meMap.put(c.getCenter().toString(), wmo.getText());
+        }
 
         new LoadMarkerBitmapDescriptor(this, mMap).execute(lkml);
     }

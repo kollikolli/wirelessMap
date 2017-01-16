@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,6 +13,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +21,7 @@ import at.jku.pervasive.wirelessmap.WirelessMap;
 import at.jku.pervasive.wirelessmap.model.Bluetooth;
 import at.jku.pervasive.wirelessmap.model.Cell;
 import at.jku.pervasive.wirelessmap.model.Location;
+import at.jku.pervasive.wirelessmap.model.WMOptions;
 import at.jku.pervasive.wirelessmap.model.Wifi;
 
 /**
@@ -40,9 +43,9 @@ public class DbHandler extends SQLiteOpenHelper{
     private static DbHandler instance = null;
 
     private final Context context;
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 10;
 
-    private static final String DATABASE_NAME = "WirelessMap_1.db";
+    private static final String DATABASE_NAME = "WirelessMap_10.db";
     private static final String TABLE_WIFI = "wifi";
     private static final String TABLE_BLUETOOTH = "bluetooth";
     private static final String TABLE_CELL = "cell";
@@ -273,10 +276,9 @@ public class DbHandler extends SQLiteOpenHelper{
     public List<Wifi> getWifis() {
         List<Wifi> wifis = new ArrayList<>();
 
-        String query = "Select * FROM " + TABLE_WIFI;
-        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "Select * FROM " + TABLE_WIFI + " ORDER BY " + COLUMN_SCANDATE + " DESC";
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-
 
         while(cursor.moveToNext()){
             Wifi wifi = new Wifi();
@@ -284,9 +286,12 @@ public class DbHandler extends SQLiteOpenHelper{
             wifi.set_db(cursor.getInt(1));
             wifi.set_ssid(cursor.getString(2));
             wifi.set_mac(cursor.getString(3));
-            wifi.set_scandate(cursor.getLong(4));
-            wifi.set_bandwith(cursor.getFloat(5));
-            wifi.set_latency(cursor.getInt(6));
+            wifi.set_frequency(cursor.getInt(4));
+            wifi.set_capabilities(cursor.getString(5));
+            wifi.set_channelWidth(cursor.getInt(6));
+            wifi.set_scandate(cursor.getLong(7));
+            wifi.set_bandwith(cursor.getFloat(8));
+            wifi.set_latency(cursor.getInt(9));
             wifis.add(wifi);
         }
 
@@ -299,7 +304,7 @@ public class DbHandler extends SQLiteOpenHelper{
     public List<Cell> getCells() {
         List<Cell> cells = new ArrayList<>();
 
-        String query = "Select * FROM " + TABLE_CELL;
+        String query = "Select * FROM " + TABLE_CELL  + " ORDER BY " + COLUMN_SCANDATE + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -310,8 +315,14 @@ public class DbHandler extends SQLiteOpenHelper{
             cell.set_db(cursor.getInt(1));
             cell.set_scandate(cursor.getLong(2));
             cell.set_gsmcellid(cursor.getInt(3));
-            cell.set_bandwith(cursor.getFloat(4));
-            cell.set_latency(cursor.getInt(5));
+            cell.set_lac(cursor.getInt(4));
+            cell.set_psc(cursor.getInt(5));
+            cell.set_bslatitude(cursor.getInt(6));
+            cell.set_bslongitude(cursor.getInt(7));
+            cell.set_networkid(cursor.getInt(8));
+            cell.set_networkid(cursor.getInt(9));
+            cell.set_bandwith(cursor.getFloat(10));
+            cell.set_latency(cursor.getInt(11));
             cells.add(cell);
         }
 
@@ -324,7 +335,7 @@ public class DbHandler extends SQLiteOpenHelper{
     public List<Bluetooth> getBluetooths() {
         List<Bluetooth> bluetooths = new ArrayList<>();
 
-        String query = "Select * FROM " + TABLE_WIFI ;
+        String query = "Select * FROM " + TABLE_BLUETOOTH  + " ORDER BY " + COLUMN_SCANDATE + " DESC";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
@@ -334,8 +345,10 @@ public class DbHandler extends SQLiteOpenHelper{
             bluetooth.set_bluetoothId(cursor.getInt(0));
             bluetooth.set_db(cursor.getInt(1));
             bluetooth.set_name(cursor.getString(2));
-            bluetooth.set_mac(cursor.getString(3));
-            bluetooth.set_scandate(cursor.getLong(4));
+            bluetooth.set_bondstate(cursor.getInt(3));
+            bluetooth.set_deviceclass(cursor.getInt(4));
+            bluetooth.set_mac(cursor.getString(5));
+            bluetooth.set_scandate(cursor.getLong(6));
             bluetooths.add(bluetooth);
         }
 
@@ -345,23 +358,136 @@ public class DbHandler extends SQLiteOpenHelper{
         return bluetooths;
     }
 
-    public String getDataFromCircle(LatLng pos) {
-        float latit = (float) pos.latitude;
-        float longit = (float) pos.longitude;
+    public WMOptions getWMORange(long scandate){
 
-        String query = "Select scandate, longitude, latitude FROM " + TABLE_LOCATION + " WHERE latitude = 37.421997";// + (float) latit + ""; // + " AND " + COLUMN_LATITUDE + " =  " + latit + "";
+        List<Wifi> wifis = new ArrayList<>();
+        long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(scandate);
+        long past = timeSeconds - 10;
+        long future = timeSeconds + 10;
+        past = past*1000;
+        future = future*1000;
+        LatLng curr = getLocationAtTime(scandate);
+        String query = "Select * FROM " + TABLE_WIFI + " WHERE " + COLUMN_SCANDATE + " BETWEEN " + past + " AND " + future + ";"; // AND strftime('%s', " + scandate + " / 1000)";
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        if(cursor.moveToNext()){
-            long scandate = cursor.getLong(0);
-            float longi = cursor.getFloat(1);
-            float lati = cursor.getFloat(2);
-            cursor.close();
-            db.close();
+
+        while(cursor.moveToNext()){
+            Wifi wifi = new Wifi();
+            wifi.set_wifiId(cursor.getInt(0));
+            wifi.set_db(cursor.getInt(1));
+            wifi.set_ssid(cursor.getString(2));
+            wifi.set_mac(cursor.getString(3));
+            wifi.set_frequency(cursor.getInt(4));
+            wifi.set_capabilities(cursor.getString(5));
+            wifi.set_channelWidth(cursor.getInt(6));
+            wifi.set_scandate(cursor.getLong(7));
+            wifi.set_bandwith(cursor.getFloat(8));
+            wifi.set_latency(cursor.getInt(9));
+            LatLng llat = getLocationAtTime(wifi.get_scandate());
+            if (llat.longitude == curr.longitude && llat.latitude == curr.latitude) {
+                wifis.add(wifi);
+            }
         }
-        return null;
+        cursor.close();
+        db.close();
+        List<Bluetooth> bluetooths = new ArrayList<>();
+
+        query = "Select * FROM " + TABLE_BLUETOOTH + " WHERE " + COLUMN_SCANDATE + " BETWEEN " + past + " AND " + future + ";";
+        db = this.getReadableDatabase();
+        cursor = db.rawQuery(query, null);
+
+        String mac = "";
+        while(cursor.moveToNext()){
+            Bluetooth bluetooth = new Bluetooth();
+            bluetooth.set_bluetoothId(cursor.getInt(0));
+            bluetooth.set_db(cursor.getInt(1));
+            bluetooth.set_name(cursor.getString(2));
+            bluetooth.set_bondstate(cursor.getInt(3));
+            bluetooth.set_deviceclass(cursor.getInt(4));
+            bluetooth.set_mac(cursor.getString(5));
+            bluetooth.set_scandate(cursor.getLong(6));
+            LatLng llat = getLocationAtTime(bluetooth.get_scandate());
+            if (llat.longitude == curr.longitude && llat.latitude == curr.latitude) {
+                bluetooths.add(bluetooth);
+            }
+        }
+
+        cursor.close();
+        db.close();
+        List<Cell> cells = new ArrayList<>();
+
+        query = "Select * FROM " + TABLE_CELL + " WHERE " + COLUMN_SCANDATE + " BETWEEN " + past + " AND " + future + ";";
+        db = this.getReadableDatabase();
+        cursor = db.rawQuery(query, null);
+
+
+        while(cursor.moveToNext()){
+            Cell cell = new Cell();
+            cell.set_cellId(cursor.getInt(0));
+            cell.set_db(cursor.getInt(1));
+            cell.set_scandate(cursor.getLong(2));
+            cell.set_gsmcellid(cursor.getInt(3));
+            cell.set_lac(cursor.getInt(4));
+            cell.set_psc(cursor.getInt(5));
+            cell.set_bslatitude(cursor.getInt(6));
+            cell.set_bslongitude(cursor.getInt(7));
+            cell.set_networkid(cursor.getInt(8));
+            cell.set_networkid(cursor.getInt(9));
+            cell.set_bandwith(cursor.getFloat(10));
+            cell.set_latency(cursor.getInt(11));
+            LatLng llat = getLocationAtTime(cell.get_scandate());
+            if (llat.longitude == curr.longitude && llat.latitude == curr.latitude) {
+                cells.add(cell);
+            }
+        }
+
+        cursor.close();
+
+        db.close();
+
+        int countsignals = (bluetooths.size() + wifis.size() + cells.size()) * 10;
+        int sumdb = 0;
+        int avgwifidb = 0;
+        int avgcelldb = 0;
+        for (int i = 0; i<wifis.size(); i++) {
+            Wifi w = wifis.get(i);
+            avgwifidb += w.get_db();
+        }
+        for (int i = 0; i<cells.size(); i++) {
+            Cell c = cells.get(i);
+            avgcelldb += c.get_db();
+        }
+        sumdb = avgwifidb + (avgcelldb*-1);
+        int res;
+        if ((wifis.size()+cells.size())>0) {
+            res = sumdb / (wifis.size() + cells.size());
+        } else {
+            res = sumdb / 1;
+        }
+        res = res * -1;
+        int color;
+        if (res >= 40) {
+            if (res >= 80) {
+                color = Color.GREEN;
+            } else
+            {
+                color = Color.YELLOW;
+            }
+        } else {
+                color = Color.RED;
+        }
+        String text = "";
+        text += "WIFI:\tAVGDB:" + avgwifidb + "\tCOUNT:" + wifis.size() + "\n";
+        text += "BLUETOOTH:\tCOUNT:" + bluetooths.size() + "\n";
+        text += "CELL:\tDB:" + avgcelldb;
+        WMOptions wmo = new WMOptions(countsignals, color, text, curr);
+
+        return wmo;
+
     }
+
 
     public LatLng getLocationAtTime(long scandate){
 

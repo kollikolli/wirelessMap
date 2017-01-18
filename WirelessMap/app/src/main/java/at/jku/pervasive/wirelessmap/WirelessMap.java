@@ -62,10 +62,6 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
     Intent wifiServiceIntent;
     Intent connectionServiceIntent;
 
-    static boolean btOn = true;
-    static boolean wifiOn = true;
-    static boolean cellOn = true;
-
     Button cell;
     Button bt;
     Button wifiButton;
@@ -113,22 +109,22 @@ public class WirelessMap extends FragmentActivity implements OnMapReadyCallback 
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View click) {
-                btOn = !btOn;
-                bt.setText(btOn ? "BT On" : "BT Off");
+                btfilter = !btfilter;
+                bt.setText(btfilter ? "BT On" : "BT Off");
             }
         });
         cell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View click) {
-                cellOn = !cellOn;
-                cell.setText(cellOn ? "Cell On" : "Cell Off");
+                cellfilter = !cellfilter;
+                cell.setText(cellfilter ? "Cell On" : "Cell Off");
             }
         });
         wifiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View click) {
-                wifiOn = !wifiOn;
-                wifiButton.setText(wifiOn ? "Wifi On" : "Wifi Off");
+                wififilter = !wififilter;
+                wifiButton.setText(wififilter ? "Wifi On" : "Wifi Off");
             }
         });
 
